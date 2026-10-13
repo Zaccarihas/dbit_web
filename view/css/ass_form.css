@@ -1,0 +1,38 @@
+#frm_associate{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    max-width: 400px;
+}
+
+#fldset_control {
+    display: flex;
+    flex-flow: column-reverse nowrap;
+    align-items: flex-end;
+    justify-content: space-around;
+
+}
+
+.formfield {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-areas: 
+        "lbl fld";
+}
+
+.formfield .label {
+    grid-area: lbl;
+}
+
+.formfield .field {
+    grid-area: fld;
+}
+
+#total {
+    text-align: right;
+}
+
+.formbuttons {
+    min-width: 100%;
+}
+

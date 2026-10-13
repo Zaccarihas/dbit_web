@@ -1,0 +1,186 @@
+FORM {
+    display: grid;
+    grid-template-rows: 3;
+    grid-template-columns: 1fr 5fr;
+    grid-template-areas: 
+        "description entries"
+        "summary entries" 
+        "control entries";
+    gap: 10px;
+    max-width: 1200px;
+
+}
+
+#account_id {
+    grid-area: status;
+}
+
+/* LAYOUT - Transaction Info */
+
+#fldset_desc {
+    grid-area: description;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+#fldset_summary {
+    grid-area: summary;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px
+}
+
+#fldset_control {
+    grid-area: control;
+    display: flex;
+    flex-flow: column-reverse nowrap;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+
+/* TAGS */
+#tags {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#tag_ctrl {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+/* LAYOUT - Entry Info */
+
+#layout_entries {
+    grid-area: entries;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+
+/* Table Design */
+
+/* General table design */
+
+.list_table {
+    table-layout: fixed;
+    margin: 10px auto;
+    border-collapse: collapse;
+}
+
+.list_table tbody tr:nth-child(odd) {
+    background-color: #dfd;
+}
+
+.list_table th, td  {
+    padding: 0.2em;
+    vertical-align: top;
+}
+
+/* Control */
+.list_table tr :nth-child(1){
+    width: 80px;
+    text-align: center;
+}
+
+/* Account table */
+
+/* Status */
+#accounts_table tr :nth-child(2) {
+    width: 100px;
+    text-align: center;
+}
+
+/* Account */
+#accounts_table tr :nth-child(3){
+    width: 1fr;
+    text-align: left;
+}
+
+/* Total */
+#accounts_table tr :nth-child(4){
+    width: 120px;
+    text-align: right;
+}
+
+/* Associates table */
+
+/* Associate */
+#associates_table tr :nth-child(2){
+    width: 1fr;
+    text-align: left;
+}
+
+/* Reference */
+#associates_table tr :nth-child(3) {
+    width: 1fr;
+    text-align: left;
+}
+
+/* Total */
+#associates_table tr :nth-child(4){
+    width: 120px;
+    text-align: right;
+}
+
+/* Depots table */
+
+/* Status */
+#depots_table tr :nth-child(2){
+    width: 1fr;
+    text-align: left;
+}
+
+/* Total */
+#associates_table tr :nth-child(3){
+    width: 120px;
+    text-align: right;
+}
+
+/* Categories table */
+
+/* Category */
+#categories_table tr :nth-child(2){
+    width: 1fr;
+    text-align: left;
+}
+
+/* Note */
+#associates_table tr :nth-child(3) {
+    width: 3fr;
+    text-align: left;
+}
+
+/* Total */
+#associates_table tr :nth-child(3){
+    width: 120px;
+    text-align: right;
+}
+
+
+/* General elements */
+
+.negative {
+    color: red;
+}
+
+.positive {
+    color: green;
+}
+
+.formfield {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.formbuttons {
+    min-width: 100%;
+}
+
+thead
+{
+    border-bottom: 2px solid;
+
+}
+

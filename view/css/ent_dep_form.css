@@ -1,0 +1,24 @@
+FORM {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    max-width: 30%;
+}
+
+.formfield {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.formbuttons {
+    min-width: 100%;
+}
+
+#total {
+    text-align: right;
+}
+
+
+
+
+

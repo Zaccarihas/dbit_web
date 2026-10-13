@@ -1,0 +1,132 @@
+Current
+---------------------------------------------------------------------------
+    - v 1.1 Refactoring
+        - Skapa Git
+
+Backlog
+----------------------------------------------------------------------------
+
+    - Unplanned
+
+    - v 1.1 Refactoring
+        - Lägg in Twig
+            - installera via composer
+            - lägg in ref till autoloader
+            - skapa twig-miljö
+            - skapa templates
+        - Lägg in SASS
+            - installera via npm
+            - lägg in ett konverteringskommando i node-filen
+        - Gör klasser
+        - Gör en separat tabell för Category som kompletterar Nodes tabellen med fältet Group. Group ska sedan innehålla antingen "Income" eller "Expense" för kategorierna.
+        - Spara endast tillägg i tabellen ents_category om nåt av fälten i tabellen innehåller ett värde och inte när alla fält har värdet null
+        - Gör en vy som kombinerar Nodes med den nya tabllen för CatgoryExp
+        - Uppdatera frågor i formulär, listor och controllers så att de använder den nya dbvyn istället för att filtrerar på nodes-category-CategoryInc och CategoryExp
+        - Kan man generallisera listor och formulär för att minska antalet filer?
+        - Dela upp js-script i entry form i funktioner och lägg i externa filer
+        - Gör en tabell med tag tilldelning där ett fält category avgör om taggen hör till en transaktion eller ett entry.
+        - Gör så att taggar endast kan väljas ur en tag-taxonomy, men att nya taggar enkelt kan läggas in i taxonomyn 
+        direkt från formulär där man vill använda dem. (ex genom nya taggar läggs på högsta nivån i tag-nedbrytningen och 
+        man får en fråga om att bekräfta inmatningen).
+        - Använd JS för balansberäkningar istället för att lagra dem i SESSION.
+
+    - v 1.2 Functionality
+        - Gör rapporter
+            - Lägg in nya taggar för ett entry direkt i DOM-trädet med hjälp av JS och skicka med dessa som en post variabel till entry_reg.php via interception gm JS.
+            - Transaktioner per månad och per konto
+                - Lägg in avstämningar ibland transaktionerna
+        - Filter-funktion för listor
+        - Sök-funktion
+            - konton
+            - avstämningar
+                - belopp
+                - datum
+                - konto
+                - fritext note
+            - Transaktioner
+        - Skapa anpassade sidor för de olika entiteterna
+            - Konton
+                - Gör så att det går att det går att registrera underställda konton i överställt kontos formulär
+                - Gör så att man kan registrera avstämningar och transaktioner från en kontovy
+            - Avstämningar
+            - Aktörer
+            - Transaktioner
+            - Kategorier
+            - Etiketter
+        - Gör det möjligt att koppla flera alias till ett konto och ange under vilken period dessa alias var aktiva
+            - Utred om varje kort/betalningsmetod ska vara en egen entitet och hur dessa då ska hanteras.
+                - Skilj på alias som är en identitet för kontot och på kopplade betalningsmetoder (kortnummer etc)
+        - Dela upp reconciled i separata datum och tidsfält men behåll dem sammanslagna i databasen.
+        - Flytta fältet notes till nodes istället för i tabellen accounts så att det kan användas av andra typer av noder så som exempelvis kategorier
+        - Föreslå befintliga taggar ordnade efter senast använda när man lägger till taggar i en entry
+        - Se till att den föreslagna nuvarande tiden från systemklockan blir rätt när det gäller svensk-tid och sommartid vid registrering av ny avstämning
+        - Lägg in fält för om ett konto är aktivt eller inte och gör så att inaktiva konton inte visas i kontoplanen
+        - Lägg in så att man för konton kan registrera ränta (skuld eller tillgodo) samt övriga avgifter och gör en funktion som beräknar den effektiva räntan.
+        - Utred statushantering
+            - Status borde registreras på både transaktion och på entry:
+                TRANSACTION STATUS
+                * Disputed - transaktionen granskas gällande dess riktighet.
+                * Confirmed - transaktionen har konfirmerats genom jämförelse med ett kvitto eller annan redovisning
+                * Verified - transaktionen har bekräftats från annan källa ex kontoutdrag
+                * Cleared - alla entries i transaktionen har genomförts och bekräftats
+                * Reconciled - alla entries i transaktionen stämmer med avstämningsuppgifter
+                ENTRY STATUS
+                = Endast för balanskontering
+                * Bal Out stat = Cleared - Bekräftat genomförande av entry på utgående balanskonto
+                * Bal In stat = Cleared - Bekräftat genomförande av entry på ingående balanskonto
+                * Bal Out stat = Reconciled - Entry stämmer med avstämningsbelopp på utgående balanskonto
+                * Bal In stat = Reconciled - Entry stämmer med avstämningsbelopp på utgående balanskonto
+        - Gör automatiskt kontroll mot avstämningar för att se om alla transaktioner har blivit korrekt registrerade.
+
+    - v 1.3 JS
+        - Skapa js-script för inmatning av taggar och entries istället för att anropa separata php-formulär. 
+        När formuläret sparas ska eventet fångas i js och där ska inmatade element på sidan hanteras. innan det skickas till pst.
+        - Analysera hur jag kan lägga in flera entries i transaktionsformuläret via js så att datat följer med till pst-hanteringen 
+        via POST-anropet.  
+
+    v 1.4 Design
+        - Fixa tabelldesignen i transaktionsformuläret (Öppna knappen ska vara först och bredare, statusfältet ska vara bredare.)
+
+    v 1.5 Registration Aids
+        - gör så att man kan lägga till nya noder från transaktionsformulär
+        - Hantera transaktionsbalans
+            - Tillåt inte att en transaktion sparas obalanserad
+                - Sätt knappen register inaktiverad till alla entry_totals överensstämmer.
+            - kontrollera att minst en entry har skapats i varje grupp
+                - Kan man skapa en default entry utifrån transaktionsdatat för att slippa skriva in samma sak flera gånger?
+                - Lägg in accesskey för knapparna i samtliga formulär
+    - Fixa så att man kan använda punkt vid inmatning av belopp
+    - Stresstest
+        - Registrera skarpa värden
+            - Ta ut kontoutdrag
+                - Registrera Transaktioner
+            - Registrera kvitton
+
+
+
+- v 2.0 - Vad bör du?
+    - Hantera scheman
+    - Hantera budget
+    - Hantera konton
+        - Hantera kontoplan
+            - Visa som ett träd
+            - Gör det möjligt att stega i listan
+            - Gör det möjligt att markera ett konto i listan
+            - gör det möjligt att markera flera konton i listan
+            - Lägg in en sub-knapp för varje konto i listan
+            - Lägg in så att markerat konto blir parent när man tryckker på nytt konto
+        - Ta bort konto
+            - lägg in ikon eller knapp för att ta bort ett konto i listan
+    - Hantera avstämningar
+        - Uppdatera en recon
+            - fixa så att man kan skriva in värde i beloppsfältet men att det visas som en formaterad sträng
+    - Utred taxonomies av etiketter
+    - Utred redovisningsobjekt och hur dessa skulle skilja sig från etiketter (behövs redovisningsobjekt)?
+    - Gör det möjligt att registrera nya kategorier, aktörer, konton, och depåer från entry form under pågående editering av ett entry.
+
+- v 3.0 - Vad vill du?
+    - Hantera mål och avbetalningsplaner
+
+- v 4.0 - REST
+    - Bygg en REST-server som kan anropas via asynkrona js-anrop istället för att allt hanteras via php på server-sidan.
+    - Lägg in ett entry form i själva transaktionsformuläret och uppdatera listan via javascript asynkront

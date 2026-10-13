@@ -1,0 +1,49 @@
+#frm_account {
+    display: grid;
+    grid-template-rows: 2;
+    grid-template-columns: 1fr 200px;
+    grid-template-areas: 
+        "status status"
+        "description meta"
+        "description control";
+    gap: 10px;
+    max-width: 600px;
+}
+
+#account_id {
+    grid-area: status;
+}
+
+#fldset_meta {
+    grid-area: meta;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+
+}
+
+#fldset_desc {
+    grid-area: description;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+#fldset_control {
+    grid-area: control;
+    display: flex;
+    flex-flow: column-reverse nowrap;
+    align-items: flex-end;
+    justify-content: space-around;
+
+}
+
+.formfield {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.formbuttons {
+    min-width: 100%;
+}
+

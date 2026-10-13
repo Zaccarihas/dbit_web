@@ -1,0 +1,65 @@
+FORM {
+    display: grid;
+    grid-template-rows: 3;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        "description accounting"
+        "description meta"
+        "tags control";
+    gap: 10px;
+    max-width: 50%;
+    margin: auto;
+}
+
+#fldset_description {
+    grid-area: description;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+#fldset_accounting {
+    grid-area: accounting;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+#fldset_meta {
+    grid-area: meta;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+#fldset_tags {
+    grid-area: tags;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#fldset_control {
+    grid-area: control;
+    display: flex;
+    flex-flow: column-reverse nowrap;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+
+.formfield {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.formbuttons {
+    min-width: 100%;
+}
+
+#total {
+    text-align: right;
+}
+
+
+
+
+
