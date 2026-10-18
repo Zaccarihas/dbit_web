@@ -2,6 +2,13 @@ Current
 ---------------------------------------------------------------------------
     - v 1.1 Refactoring
         - Gör klasser
+            - Associates
+            - Categories
+            - Depots
+            - Recons
+            - Tags
+            - Entries
+            - Transactions
 
 Backlog
 ----------------------------------------------------------------------------
@@ -130,3 +137,6 @@ Backlog
 - v 4.0 - REST
     - Bygg en REST-server som kan anropas via asynkrona js-anrop istället för att allt hanteras via php på server-sidan.
     - Lägg in ett entry form i själva transaktionsformuläret och uppdatera listan via javascript asynkront
+
+- v 5.0 - Mobile Application
+    - Anpassa websidorna och formulären till mobilvisning med adaptiv design.

@@ -7,6 +7,7 @@ class Account {
     public $id;
     public $label;
     public $title;
+    public $prompt;
     public $parent;
     public $description;
     public $upper_limit;
@@ -15,6 +16,9 @@ class Account {
     public $alias;
     public $rate;
     public $note;
+    public $reconciled;
+    public $rec_total;
+    public $cur_total;
 
     private $db;
     private $debug = false;
@@ -26,12 +30,12 @@ class Account {
     
     private $sql_add_node = <<< SQL
     INSERT INTO nodes(node_id, label, title, parent, type, description, note)
-    VALUES (:node_id, :label, :title, :parent, "Account", :description, :note)
+    VALUES (:id, :label, :title, :parent, "Account", :description, :note)
     SQL;
 
     private $sql_add_account = <<< SQL
     INSERT INTO accounts(account_id, upper_limit, lower_limit, trustee, alias_id, rate)
-    VALUES (:account_id, :upper_limit, :lower_limit, :trustee, :alias_id, :rate)
+    VALUES (:id, :upper_limit, :lower_limit, :trustee, :alias_id, :rate)
     SQL;
 
     private $sql_upd_node = <<< SQL
@@ -109,7 +113,7 @@ class Account {
         }
 
         // Set attributes for the Nodes query
-        $qry->bindValue(':node_id', $this->id??null);
+        $qry->bindValue(':id', $this->id??null);
         $qry->bindValue(':label', $this->label);
         $qry->bindValue(':title', $this->title);
         $qry->bindValue(':parent', $this->parent);
@@ -129,16 +133,17 @@ class Account {
         $qry = $this->db->prepare($sql);
             
         // Set attributes for the accounts query
-        $qry->bindValue(':account_id', $node_id);
+        $qry->bindValue(':id', $node_id);
         $qry->bindValue(':upper_limit', $this->upper_limit);
         $qry->bindValue(':lower_limit', $this->lower_limit);
         $qry->bindValue(':trustee', $this->trustee);
-        $qry->bindValue(':alias_id', $this->alias);
+        $qry->bindValue(':alias', $this->alias);
         $qry->bindValue(':rate', $this->rate);
         DB_manager::run($qry);
 
         if($this->debug){
             echo "<br>Accounts updated";
+            die();
         }
     }
 

@@ -7,9 +7,9 @@ class Datatransfer_manager{
 
     public function __construct()
     {
-        $this->get = $_GET??null;
-        $this->post = isset($_POST)?$this->post_cleaner():null;
-        $this->session = isset($_SESSION)?$_SESSION:null;
+        $this->get = empty($_GET)?null:$_GET;
+        $this->post = empty($_POST)?null:$this->post_cleaner();
+        $this->session = empty($_SESSION)?null:$_SESSION;
     }
 
     // Replace empty string with null
