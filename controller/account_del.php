@@ -2,9 +2,8 @@
    
     require "../dbconnect.php";
     //require "error_reporting.php";
+    $dbg = false;
 
-    // Testing
-    //echo "<br><h4>GET</h4><pre>"; print_r($_GET); echo "</pre>";
 
     // Ta bort från accounts
     $sql = <<< SQL

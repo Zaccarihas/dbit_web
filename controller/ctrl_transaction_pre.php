@@ -160,5 +160,5 @@
     // Testing
     //echo "<br>Temporary Transaction:<pre>"; print_r($_SESSION["transaction"]); echo "</pre>";
             
-    header("Location: /dbit2/view/frm_transaction.php");
+    header("Location: /dbit/view/frm_transaction.php");
     die();

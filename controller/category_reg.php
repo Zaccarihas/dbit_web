@@ -42,5 +42,5 @@
         die();
     }
             
-    header("Location: /dbit2/lst_categories.php");
+    header("Location: /dbit/lst_categories.php");
     die();

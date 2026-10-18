@@ -2,7 +2,7 @@
 require "../controller/error_reporting.php";
 
 // Connect to database
-require "../controller/dbconnect.php";
+$db = require "../controller/dbconnect.php";
 
 // Get all nodes
 $qry = $db->prepare("SELECT * FROM transactions ORDER BY transaction_date DESC");

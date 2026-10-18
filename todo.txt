@@ -1,7 +1,7 @@
 Current
 ---------------------------------------------------------------------------
     - v 1.1 Refactoring
-        - Skapa Git
+        - Gör klasser
 
 Backlog
 ----------------------------------------------------------------------------
@@ -17,7 +17,7 @@ Backlog
         - Lägg in SASS
             - installera via npm
             - lägg in ett konverteringskommando i node-filen
-        - Gör klasser
+
         - Gör en separat tabell för Category som kompletterar Nodes tabellen med fältet Group. Group ska sedan innehålla antingen "Income" eller "Expense" för kategorierna.
         - Spara endast tillägg i tabellen ents_category om nåt av fälten i tabellen innehåller ett värde och inte när alla fält har värdet null
         - Gör en vy som kombinerar Nodes med den nya tabllen för CatgoryExp

@@ -761,7 +761,7 @@
     // Save the current form data into the temporary transaction in SESSION
     save_trnform_to_tmp();
 
-    $view_folder = "/dbit2/view/";
+    $view_folder = "/dbit/view/";
     $return_location = "lst_transactions.php";
 
     //$new_trn = $_POST["recon_id"] === null;

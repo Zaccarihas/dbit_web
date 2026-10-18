@@ -2,7 +2,7 @@
 require "controller/error_reporting.php";
 
 // Connect to database
-require "dbconnect.php";
+$db = require "dbconnect.php";
 
 // Get all nodes
 $qry = $db->prepare("SELECT * FROM account_summary");

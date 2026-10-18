@@ -42,7 +42,7 @@
             // Remove the temporary entry from session
             unset($_SESSION["entry"]);
             
-            header("Location: /dbit2/frm_transaction.php");
+            header("Location: /dbit/frm_transaction.php");
             exit();
             break;
         case "register":
@@ -62,7 +62,7 @@
             unset($_SESSION["entry"]);
 
             // Return to the transaction form
-            header("Location: /dbit2/frm_transaction.php");
+            header("Location: /dbit/frm_transaction.php");
             exit();
             break;
 
@@ -75,7 +75,7 @@
             unset($_SESSION["entry"]);
             
             // Return to the transaction form
-            header("Location: /dbit2/frm_transaction.php");
+            header("Location: /dbit/frm_transaction.php");
             exit();
             break;
 
@@ -93,7 +93,7 @@
             } else {
                 $ext = "?ent=".$ent_idx;
             }
-            header("Location: /dbit2/frm_entry.php".$ext);
+            header("Location: /dbit/frm_entry.php".$ext);
             exit();
             
             break;
@@ -111,7 +111,7 @@
             } else {
                 $ext = "?ent=".$ent_idx;
             }
-            header("Location: /dbit2/frm_entry.php".$ext);
+            header("Location: /dbit/frm_entry.php".$ext);
             exit();
             break;
     }

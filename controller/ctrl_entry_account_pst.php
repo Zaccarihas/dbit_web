@@ -26,7 +26,7 @@
     $ent_idx = isset($_GET["ent"])?$_GET["ent"]:null;
     $tmp_ent = $_SESSION["entry"];
 
-    $view_folder = "/dbit2/view/";
+    $view_folder = "/dbit/view/";
     $return_location = "frm_transaction.php";
 
     // Route

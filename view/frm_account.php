@@ -1,7 +1,8 @@
 <?php
     // Init
-    require "dbconnect.php";
+    $db = require "dbconnect.php";
     //require "controller/error_reporting.php";
+    $dbg = false;
 
     $dta = [
         "account_id" => null,
@@ -22,12 +23,6 @@
         $qry->execute();
         $dta = $qry->fetchAll(PDO::FETCH_ASSOC)[0];
     }
-
-    // Testing
-    /*
-    echo "<br><h4>Account</h4><pre>"; print_r($dta); echo "</pre>";
-    echo "<br><h4>Call</h4><pre>"; print_r($_GET); echo "</pre>";
-    */
 
     $new_acc = $dta["account_id"] == null;
 
@@ -56,7 +51,7 @@
     <head>
 
     <body>
-        <form id="frm_account" method="post" action="controller/account_reg.php">
+        <form id="frm_account" method="post" action="../controller/account_reg.php">
             <div id="account_id">
                 <?php
                     if($new_acc){
@@ -151,7 +146,7 @@
             const confirmed = window.confirm("Är du säker på att du vill ta bort kontot");
             
             if(confirmed) {
-                window.location.href = "controller/account_del.php?id=" + account;
+                window.location.href = "../controller/account_del.php?id=" + account;
             }           
             
         }

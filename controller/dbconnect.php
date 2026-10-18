@@ -1,5 +1,5 @@
 <?php
-require "../config/db_ds.php";
+require "config/db_ds.php";
 
 try {
     $db = new PDO($dsn, $usr, $pwd);

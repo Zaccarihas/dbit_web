@@ -2,41 +2,15 @@
     
     // Development    
     //require "controller/error_reporting.php";
+    $dbg = false;
         
     // Init
     session_start();
     require "../controller/dbconnect.php";
-
-    // Testing
-    //echo "<b><h4>Session</h4><pre>"; print_r($_SESSION); echo "</pre>";
-
-    // Reference to nodes
-    /*
-    $nodes = [];
-    $sql = <<< SQL
-        SELECT * 
-        FROM nodes 
-        ORDER BY node_id ASC
-    SQL;
-    $qry = $db->prepare($sql);
-    $qry->execute();
-    $res = $qry->fetchAll(PDO::FETCH_ASSOC);
-    foreach($res as $itm){
-        $nodes[$itm["node_id"]] = $itm;
-    }
-    */
-
-    //echo "<pre>"; print_r($nodes); echo "</pre>"; die();
-
-    //echo "<b><h4>Associates</h4><pre>"; print_r($ascs); echo "</pre>";
     
     $trn = $_SESSION["transaction"];
     $new = $trn["transaction_id"] === null;
     $fmt = new NumberFormatter("sv_SE", NumberFormatter::CURRENCY);
-
-    // Testing
-    //echo "<br>Temporary Transaction:<pre>"; print_r($trn); echo "</pre>";
-    //die();
 
 ?>
 <html>

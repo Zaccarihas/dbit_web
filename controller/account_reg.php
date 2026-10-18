@@ -1,6 +1,10 @@
 <?php
    
-    require "../dbconnect.php";
+    
+    require_once "cls_db_manager.php";
+    $dbm = new DB_manager("../config/db_ds.txt");
+    $db = $dbm->connect();
+
 
     // Replace empty strings with null
     $_POST = array_map(function ($value) {

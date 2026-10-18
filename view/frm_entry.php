@@ -2,7 +2,7 @@
 
 
     // Init
-    require "dbconnect.php";
+    $db = require "dbconnect.php";
     session_start();
 
     // Testing
@@ -88,15 +88,6 @@
     $qry = $db->prepare($sql);
     $qry->execute();
     $catexps = $qry->fetchAll(PDO::FETCH_ASSOC);
-
-    /*
-    echo "<b><h4>Accounts</h4><pre>"; print_r($accs); echo "</pre>";
-    echo "<b><h4>Associates</h4><pre>"; print_r($ascs); echo "</pre>";
-    echo "<b><h4>Depots</h4><pre>"; print_r($deps); echo "</pre>";
-    echo "<b><h4>Income categories</h4><pre>"; print_r($catincs); echo "</pre>";
-    echo "<b><h4>Expense categories</h4><pre>"; print_r($catexps); echo "</pre>";
-    */
-
 
     $ent = $_SESSION["entry"];
     $ent_idx = isset($_GET["ent"])?$_GET["ent"]:null;

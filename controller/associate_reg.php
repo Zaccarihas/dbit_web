@@ -39,5 +39,5 @@
         die();
     }
             
-    header("Location: /dbit2/view/lst_associates.php");
+    header("Location: /dbit/view/lst_associates.php");
     die();

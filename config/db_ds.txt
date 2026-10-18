@@ -1,0 +1,6 @@
+Host:           192.168.50.175
+Port:           6609
+Database:       dbit
+Charset:        UTF8
+User:           dev
+Password:       Av4rak!N!01

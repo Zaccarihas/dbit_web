@@ -42,5 +42,5 @@
         die();
     }
             
-    header("Location: /dbit2/lst_depots.php");
+    header("Location: /dbit/lst_depots.php");
     die();

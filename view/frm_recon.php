@@ -1,7 +1,7 @@
 <?php
     //print_r($_GET);
 
-    require "dbconnect.php";
+    $db = require "dbconnect.php";
 
     $dta = [
         "recon_id" => null,
@@ -34,7 +34,7 @@
 
     $new_itm = $dta["recon_id"] == null;
 
-    //print_r($dta);
+
 ?>
 <html>
     <head>
@@ -74,13 +74,13 @@
             <div class="formfield">
                 <label class="label" for="note">Note</label>
                 <input class="field" type="text" id="note" name="note" value="<?php 
-                    echo $new_acc?null:$dta["note"]
+                    echo $new_itm?null:$dta["note"]
                 ?>" placeholder="Notering"/>
             </div>
             <div class="formfield">
                 <label class="label" for="total">Total</label>
                 <input class="field" type="text" id="total" name="total" value="<?php 
-                    echo $new_acc?null:$fmt->formatCurrency($dta["total"]??0,"SEK");
+                    echo $new_itm?null:$fmt->formatCurrency($dta["total"]??0,"SEK");
                 ?>" placeholder="Avstämnt belopp"/>
             </div>
             <fieldset id="fldset_control">
