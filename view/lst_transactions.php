@@ -1,8 +1,13 @@
 <?php
-require "../controller/error_reporting.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/error_reporting.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_db_manager.php";
+
+// Init
+$dbm = new DB_manager($_SERVER["DOCUMENT_ROOT"]."/dbit/config/db_ds.txt");
+$db = $dbm->connect();
 
 // Connect to database
-$db = require "../controller/dbconnect.php";
+//$db = require "../controller/dbconnect.php";
 
 // Get all nodes
 $qry = $db->prepare("SELECT * FROM transactions ORDER BY transaction_date DESC");

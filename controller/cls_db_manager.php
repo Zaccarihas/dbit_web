@@ -40,9 +40,14 @@ class DB_manager {
         }
     }
 
-    public static function run($qry) {
+    public static function run($qry, $attributes = null) {
         try{
-            $qry->execute();
+            if($attributes === null) { 
+                $qry->execute();
+            }
+            else {
+                $qry->execute($attributes);
+            }
         } catch(PDOException $e) {
             echo "DB Error: ".$e->getMessage();
             die();

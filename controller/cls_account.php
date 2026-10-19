@@ -167,14 +167,14 @@ class Account {
         return $this->id === null;
     }
 
-    public function prompt() {
-        return $this->label." - ".$this->title;
-    }
-
     public function parse($src){
         foreach($src as $key => $value){
             $this->$key = $value;
         }
+    }
+
+    public function prompt() {
+        return $this->label." - ".$this->title;
     }
 
     public function dump() {
