@@ -2,10 +2,9 @@ Current
 ---------------------------------------------------------------------------
     - v 1.1 Refactoring
         - Gör klasser
-            - Associates
+            - Recons
             - Categories
             - Depots
-            - Recons
             - Tags
             - Entries
             - Transactions

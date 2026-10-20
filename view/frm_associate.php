@@ -1,24 +1,20 @@
 <?php
-    //print_r($_GET);
 
-    require "../controller/dbconnect.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/error_reporting.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_db_manager.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_datatransfer_manager.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_associate.php";
 
-    $dta = [
-        "node_id" => null,
-        "label" => null,
-        "title" => null,
-    ];
+    $dm = new Datatransfer_manager();
+    $dbm = new DB_manager($_SERVER["DOCUMENT_ROOT"]."/dbit/config/db_ds.txt");
+    $db = $dbm->connect();
 
-    if($_GET["id"]) {
+    $assoc = new Associate($db);
 
-        $qry = $db->prepare("SELECT * FROM nodes WHERE node_id=:id");
-        $qry->bindValue(":id", (int)$_GET["id"]);
-        $qry->execute();
-        $dta = $qry->fetchAll(PDO::FETCH_ASSOC)[0];
-
+    if($dm->get_set()) {
+        $assoc->id = $dm->get["id"];
+        $assoc->load();
     }
-
-    $new_itm = $dta["node_id"] == null;
 
 ?>
 <html>
@@ -32,42 +28,53 @@
     <head>
 
     <body>
-        <form id="frm_associate" method="post" action="../controller/associate_reg.php">
+        <form id="frm_associate" method="post" action="/dbit/controller/ctrl_associate_pst.php">
+            
             <div id="node_id">
-                <?php echo $new_itm?"NEW":$dta["node_id"]; ?>
-                <input type="hidden" name="node_id" value="<?php echo $new_itm?null:$dta["node_id"]?>">
+                <?php echo $assoc->is_new()?"NEW":$assoc->id; ?>
+                <input type="hidden" name="id" value="<?php echo $assoc->is_new()?null:$assoc->id ?>">
             </div>
+            
             <div class="formfield">
-                <label class="label"for="Title">Title</label>
+                <label class="label"for="title">Title</label>
                 <input class="field" type="text" id="title" name="title" value="<?php 
-                    echo $new_itm?null:$dta["title"];
+                    echo $assoc->is_new()?null:$assoc->title;
                 ?>" placeholder="Motpart" required/>
             </div>
+
+            <div class="formfield">
+                <label class="label"for="location">Location</label>
+                <input class="field" type="text" id="location" name="location" value="<?php 
+                    echo $assoc->is_new()?null:$assoc->location;
+                ?>" placeholder="Placering"/>
+            </div>
+
             <fieldset id="fldset_control">
-                <button class="formbuttons" type="submit" id="register" name="register">Register</button>
+                <button class="formbuttons" type="submit" value="register" id="register" name="submit">Register</button>
                 <?php
-                    if(!$new_itm) {
+                    if(!$assoc->is_new()) {
                         ?>
-                        <button class="formbuttons" type="button" onclick="delete_itm(); return false;">Delete</button>
+                        <button class="formbuttons" type="submit" value="delete" name="submit" onclick="delete_asc(); return false;">Delete</button>
                         <?php
                     } 
                 ?>                
-                <button class="formbuttons" type="button" onclick="window.location.href='lst_associates.php'">Cancel</button>
+                <button class="formbuttons" type="submit" name="submit" value="cancel">Cancel</button>
             </fieldset>
         </form>
 
     <script>
-        function delete_itm(){
 
-            //alert("Hit kom du");
+        function delete_asc(){
 
-            const confirmed = window.confirm("Är du säker på att du vill ta bort motparten");
+            const frm = document.getElementById("frm_associate");
+            const confirmed = window.confirm("Är du säker på att du vill ta bort aktören");
             
             if(confirmed) {
-                window.location.href = "controller/associate_del.php?id=" + <?php echo $dta["node_id"] ?>;
-            }           
-            
+                frm.submit();
+            } else { return false; }
+                
         }
+
     </script>
 
     </body>

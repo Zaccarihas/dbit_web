@@ -6,7 +6,7 @@ class Associate extends Node {
 
     public $location;
 
-    private $debug = false;
+    private $dbg = false;
 
     protected $sql_get = <<< SQL
     SELECT * FROM vw_associates WHERE id = :id
@@ -20,12 +20,12 @@ class Associate extends Node {
     private $sql_upd_assoc = <<< SQL
     UPDATE associates
     SET location = :location
-    WHERE id = :id
+    WHERE associate_id = :id
     SQL;
 
     private $sql_del_assoc = <<< SQL
     DELETE FROM associates
-    WHERE id = :id
+    WHERE associate_id = :id
     SQL;
 
 
@@ -76,7 +76,7 @@ class Associate extends Node {
 
     }
 
-    public function del(){
+    public function delete(){
 
         if(!$this->is_new()){
             // Delete the node
@@ -85,6 +85,7 @@ class Associate extends Node {
             // Delete the Associate
             $qry = $this->db->prepare($this->sql_del_assoc);
             $qry->bindValue(':id', $this->id);
+
             DB_manager::run($qry);
         }
 

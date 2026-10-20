@@ -12,7 +12,8 @@ class Node {
     public $note;
 
     protected $db;
-    private $debug = false;
+    private $dbg = false;
+    private $dbg_delete = true;
 
     protected $sql_get = <<< SQL
     SELECT * FROM nodes WHERE id = :id
@@ -102,7 +103,7 @@ class Node {
         $sql = $this->is_new()?$this->sql_add:$this->sql_upd;
         $qry = $this->db->prepare($sql);
 
-        if($this->debug) {
+        if($this->dbg) {
             echo "<br>Node - Save<hr>";
             echo "<br>sql: ".$sql;
             echo "<br>attributes: <pre>"; print_r($this->get()); echo "</pre>";
@@ -117,6 +118,12 @@ class Node {
     }
 
     public function delete(){
+
+        if($this->dbg_delete) {
+            echo "<br><hr>Node - Delete";
+            echo "sql: $this->sql_del";
+            echo "id: ".$this->id;
+        }
         if(!$this->is_new()){
             $qry = $this->db->prepare($this->sql_del);
             $qry->bindValue(':id', $this->id);
