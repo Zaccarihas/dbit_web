@@ -1,39 +1,32 @@
 <?php
-    //print_r($_GET);
-
-    $db = require "dbconnect.php";
-
-    $dta = [
-        "recon_id" => null,
-        "rec_date" => null,
-        "account" => null,
-        "note" => null,
-        "total" => null,
-    ];
+    
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/error_reporting.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_db_manager.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_datatransfer_manager.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_tbl_recon.php";
+    
+    $dm = new Datatransfer_manager();
+    $dbm = new DB_manager($_SERVER["DOCUMENT_ROOT"]."/dbit/config/db_ds.txt");
+    $db = $dbm->connect();
+    $recon = new Recon($db);
 
     $sql = <<< SQL
-        SELECT account_id, label, title
+        SELECT id, prompt
         FROM vw_accounts
-        ORDER BY label ASC
+        ORDER BY prompt ASC
     SQL;
 
     $qry = $db->prepare($sql);
-    $qry->execute();
+    DB_manager::run($qry);
+
     $accs = $qry->fetchAll(PDO::FETCH_ASSOC);
 
-    if($_GET["id"]) {
-
-        $qry = $db->prepare("SELECT * FROM vw_recons WHERE recon_id=:id");
-        $qry->bindValue(":id", (int)$_GET["id"]);
-        $qry->execute();
-        $dta = $qry->fetchAll(PDO::FETCH_ASSOC)[0];
-
+    if($dm->get_set()) {
+        $recon->id = $dm->get['id'];
+        $recon->load();
     }
 
     $fmt = new NumberFormatter("sv_SE", NumberFormatter::CURRENCY);
-
-    $new_itm = $dta["recon_id"] == null;
-
 
 ?>
 <html>
@@ -43,72 +36,71 @@
         <meta http-equiv="Expires" content="0">
 
         <title>Recon form</title>
-        <link rel="stylesheet" href="view/rec_form.css">
+        <link rel="stylesheet" href="/dbit/view/css/rec_form.css">
     <head>
 
     <body>
-        <form id="frm_recon" method="post" action="controller/recon_reg.php">
+        <form id="frm_recon" method="post" action="/dbit/controller/ctrl_recon_pst.php">
             <div id="recon_id">
-                <?php echo $new_itm?"NEW":$dta["recon_id"]; ?>
-                <input type="hidden" name="recon_id" value="<?php echo $new_itm?null:$dta["recon_id"]?>">
+                <?php echo $recon->is_new()?"NEW":$recon->id; ?>
+                <input type="hidden" name="id" value="<?php echo $recon->is_new()?null:$recon->id?>">
             </div>
             <div class="formfield">
                 <label class="label"for="reconciled">Reconciled</label>
-                <input class="field" type="text" id="reconciled" name="reconciled" value="<?php 
-                    echo $new_itm?date("Y-m-d H:i:s"):$dta["rec_date"];
+                <input class="field" type="text" id="date" name="date" value="<?php 
+                    echo $recon->is_new()?date("Y-m-d H:i:s"):$recon->date;
                 ?>" placeholder="Avstämningstidpunkt" required/>
             </div>
             <div class="formfield">
                 <label class="label" for="account">Account</label>
                 <select class="field" id="account" name="account" required>
-                    <option value=""<?php echo $new_itm? "selected":"" ?>>Välj avstämningskonto</option>
+                    <option value=""<?php echo $recon->is_new()? "selected":"" ?>>Välj avstämningskonto</option>
                     <?php 
                     foreach($accs as $acc){ ?>
                         <option 
-                            value="<?php echo $acc["account_id"] ?>" <?php 
-                                echo $dta["account"] == $acc["account_id"]?"selected":"" 
-                            ?>><?php echo $acc["label"]." - ".$acc["title"] ?></option>
+                            value="<?php echo $acc["id"] ?>" <?php 
+                                echo $recon->account == $acc["id"]?"selected":"" 
+                            ?>><?php echo $acc["prompt"] ?></option>
                     <?php } ?>
                 </select>
             </div>
             <div class="formfield">
                 <label class="label" for="note">Note</label>
                 <input class="field" type="text" id="note" name="note" value="<?php 
-                    echo $new_itm?null:$dta["note"]
+                    echo $recon->is_new()?null:$recon->note
                 ?>" placeholder="Notering"/>
             </div>
             <div class="formfield">
                 <label class="label" for="total">Total</label>
                 <input class="field" type="text" id="total" name="total" value="<?php 
-                    echo $new_itm?null:$fmt->formatCurrency($dta["total"]??0,"SEK");
+                    echo $recon->is_new()?null:$fmt->formatCurrency($recon->total??0,"SEK");
                 ?>" placeholder="Avstämnt belopp"/>
             </div>
             <fieldset id="fldset_control">
-                <button class="formbuttons" type="submit" id="register" name="register">Register</button>
+                <button class="formbuttons" type="submit" name="submit" id="register" value="register">Register</button>
                 <?php
-                    if(!$new_itm) {
+                    if(!$recon->is_new()) {
                         ?>
-                        <button class="formbuttons" type="button" onclick="delete_itm(); return false;">Delete</button>
+                        <button class="formbuttons" type="submit" name="submit" value="delete"onclick="delete_itm(); return false;">Delete</button>
                         <?php
                     } 
                 ?>                
-                <button class="formbuttons" type="button" onclick="window.location.href='lst_recons.php'">Cancel</button>
+                <button class="formbuttons" type="submit" name="submit" value="cancel">Cancel</button>
             </fieldset>
 
         </form>
 
     <script>
+
         function delete_itm(){
 
-            //alert("Hit kom du");
-
+            const frm = document.getElementById("frm_recon");
             const confirmed = window.confirm("Är du säker på att du vill ta bort avstämningen");
             
             if(confirmed) {
-                alert("Skickar vidare till "+ <?php echo $dta["recon_id"] ?>);
-                window.location.href = "controller/recon_del.php?id=" + <?php echo $dta["recon_id"] ?>;
-            }           
-            
+                frm.submit();
+            } else { return false; }
+                
         }
     </script>
 

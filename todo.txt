@@ -2,7 +2,6 @@ Current
 ---------------------------------------------------------------------------
     - v 1.1 Refactoring
         - Gör klasser
-            - Recons
             - Categories
             - Depots
             - Tags
