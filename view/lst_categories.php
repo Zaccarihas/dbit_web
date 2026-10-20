@@ -1,15 +1,14 @@
 <?php
-require "controller/error_reporting.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/error_reporting.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_db_manager.php";
 
-// Connect to database
-$db = require "dbconnect.php";
+$dbm = new DB_manager($_SERVER["DOCUMENT_ROOT"]."/dbit/config/db_ds.txt");
+$db = $dbm->connect();
 
-// Get all nodes
-$qry = $db->prepare("SELECT * FROM nodes WHERE type='Category' ORDER BY label ASC");
-$qry->execute();
+// Get all Categories
+$qry = $db->prepare("SELECT id, prompt FROM vw_categories ORDER BY prompt ASC");
+DB_manager::run($qry);
 $res = $qry->fetchAll(PDO::FETCH_ASSOC);
-
-
 ?>
 
 <html>
@@ -20,14 +19,14 @@ $res = $qry->fetchAll(PDO::FETCH_ASSOC);
         <meta http-equiv="Expires" content="0">
         
         <title>Category list</title>
-        <link rel="stylesheet" href="view/cat_list.css?v=2">
+        <link rel="stylesheet" href="/dbit/view/css/cat_list.css?v=2">
     <head>
     <body>
         <header>
             <h1 id="main_head">Kategorier</h1>
             <nav>
-                <button onclick="window.location.href = 'frm_category.php'">Ny kategori</button>
-                <button onclick="window.location.href = 'index.php'">Tillbaka</button>
+                <button onclick="window.location.href = '/dbit/view/frm_category.php'">Ny kategori</button>
+                <button onclick="window.location.href = '/dbit/index.php'">Tillbaka</button>
             </nav>
         </header>
         
@@ -38,8 +37,8 @@ $res = $qry->fetchAll(PDO::FETCH_ASSOC);
                 </tr>
             <tbody>
                 <?php foreach($res as $itm) { ?>
-                <tr id="<?php echo "item_".$itm["node_id"] ?>">
-                    <td><a href="frm_category.php?id=<?php echo $itm["node_id"] ?>"><?php echo $itm["label"]." - ".$itm["title"]?></a></td>
+                <tr id="<?php echo "item_".$itm["id"] ?>">
+                    <td><a href="/dbit/view/frm_category.php?id=<?php echo $itm["id"] ?>"><?php echo $itm["prompt"]?></a></td>
                 </tr>
                 <?php } ?>
             </tbody>
