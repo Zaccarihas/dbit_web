@@ -1,38 +1,30 @@
 <?php
-    //print_r($_GET);
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/error_reporting.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_db_manager.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_datatransfer_manager.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/dbit/controller/cls_depot.php";
 
-    require "dbconnect.php";
+    $dm = new Datatransfer_manager();
+    $dbm = new DB_manager($_SERVER["DOCUMENT_ROOT"]."/dbit/config/db_ds.txt");
+    $db = $dbm->connect();
+    $dpt = new Depot($db);
 
-    $dta = [
-        "node_id" => null,
-        "label" => null,
-        "title" => null,
-        "parent" => null
-    ];
-
+    // Get lookup depots 
     $sql = <<< SQL
-        SELECT node_id, label, title
-        FROM nodes
-        WHERE type = "Depot"
-        ORDER BY label ASC
+        SELECT id, prompt
+        FROM vw_depots
+        ORDER BY prompt ASC
     SQL;
 
     $qry = $db->prepare($sql);
-    $qry->execute();
+    DB_manager::run($qry);
     $parents = $qry->fetchAll(PDO::FETCH_ASSOC);
 
-    if($_GET["id"]) {
-
-        $qry = $db->prepare("SELECT * FROM nodes WHERE node_id=:id");
-        $qry->bindValue(":id", (int)$_GET["id"]);
-        $qry->execute();
-        $dta = $qry->fetchAll(PDO::FETCH_ASSOC)[0];
-
+    if($dm->get_set()) {
+        $dpt->id = $dm->get["id"];
+        $dpt->load();
     }
 
-    $new_itm = $dta["node_id"] == null;
-
-    //print_r($dta);
 ?>
 <html>
     <head>
@@ -41,65 +33,64 @@
         <meta http-equiv="Expires" content="0">
 
         <title>Depot form</title>
-        <link rel="stylesheet" href="view/dep_form.css">
+        <link rel="stylesheet" href="/dbit/view/css/dep_form.css">
     <head>
 
     <body>
-        <form id="frm_depot" method="post" action="controller/depot_reg.php">
+        <form id="frm_depot" method="post" action="/dbit/controller/ctrl_depot_pst.php">
             <div id="node_id">
-                <?php echo $new_itm?"NEW":$dta["node_id"]; ?>
-                <input type="hidden" name="node_id" value="<?php echo $new_itm?null:$dta["node_id"]?>">
+                <?php echo $dpt->is_new()?"NEW":$dpt->id; ?>
+                <input type="hidden" name="id" value="<?php echo $dpt->is_new()?null:$dpt->id?>">
             </div>
             <div class="formfield">
                 <label class="label"for="label">Label</label>
                 <input class="field" type="text" id="label" name="label" value="<?php 
-                    echo $new_itm?null:$dta["label"];
+                    echo $dpt->is_new()?null:$dpt->label;
                 ?>" placeholder="Etikett" required/>
             </div>
             <div class="formfield">
                 <label class="label" for="title">Note</label>
                 <input class="field" type="text" id="title" name="title" value="<?php 
-                    echo $new_acc?null:$dta["title"]
+                    echo $dpt->is_new()?null:$dpt->title
                 ?>" placeholder="Depå"/>
             </div>
             <div class="formfield">
                 <label class="label" for="parent">Parent</label>
                 <select class="field" id="parent" name="parent">
-                    <option value=""<?php echo $new_itm? "selected":"" ?>>Välj överställd depå</option>
+                    <option value=""<?php echo $dpt->is_new()? "selected":"" ?>>Välj överställd depå</option>
                     <?php 
-                    foreach($parents as $cat){ ?>
+                    foreach($parents as $par){ ?>
                         <option 
-                            value="<?php echo $cat["node_id"] ?>" <?php 
-                                echo $dta["parent"] == $cat["node_id"]?"selected":"" 
-                            ?>><?php echo $cat["label"]." - ".$cat["title"] ?></option>
+                            value="<?php echo $par["id"] ?>" <?php 
+                                echo $dpt->parent == $par["id"]?"selected":"" 
+                            ?>><?php echo $par["prompt"] ?></option>
                     <?php } ?>
                 </select>
             </div>
             <fieldset id="fldset_control">
-                <button class="formbuttons" type="submit" id="register" name="register">Register</button>
+                <button class="formbuttons" type="submit" id="register" name="submit" value="register">Register</button>
                 <?php
-                    if(!$new_itm) {
+                    if(!$dpt->is_new()) {
                         ?>
-                        <button class="formbuttons" type="button" onclick="delete_itm(); return false;">Delete</button>
+                        <button class="formbuttons" type="submit" name= "submit" value="delete" onclick="delete_dpt(); return false;">Delete</button>
                         <?php
                     } 
                 ?>                
-                <button class="formbuttons" type="button" onclick="window.location.href='lst_depots.php'">Cancel</button>
+                <button class="formbuttons" type="submit" name="submit" value="cancel">Cancel</button>
             </fieldset>
 
         </form>
 
     <script>
-        function delete_itm(){
+        function delete_dpt(){
 
-            //alert("Hit kom du");
-
-            const confirmed = window.confirm("Är du säker på att du vill ta bort kategorin");
+            const frm = document.getElementById("frm_depot");
+            const confirmed = window.confirm("Är du säker på att du vill ta bort depån");
             
             if(confirmed) {
-                window.location.href = "controller/depot_del.php?id=" + <?php echo $dta["node_id"] ?>;
-            }           
-            
+                frm.submit();
+            } else { return false; }
+                
         }
     </script>
 
